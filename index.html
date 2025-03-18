@@ -26,7 +26,7 @@
   <!-- Hero Section -->
   <section id="home" class="text-center">
     <div class="container">
-      <img  src=""alt="Cricket Glove" class="img-fluid mb-4">
+      <img src="" alt="Cricket Glove" class="img-fluid mb-4">
       <h1 class="display-4">Premium Cricket Gloves</h1>
       <p class="lead">Perfect grip for the perfect game.</p>
       <a href="#product" class="btn btn-dark btn-lg">Shop Now</a>
@@ -36,23 +36,66 @@
   <!-- Product Section -->
   <section id="product" class="py-5">
     <div class="container">
-      <h2 class="text-center mb-4">Our Product</h2>
+      <h2 class="text-center mb-4">Our Products</h2>
       <div class="row">
-        <div class="col-md-6">
-          <img src="https://res.cloudinary.com/kakani7/image/upload/v1742270653/CRICKET_GLO0VE/shopping_eqpjyy.jpg" alt="Cricket Glove Detail" class="img-fluid">
-        </div>
-        <div class="col-md-6">
-          <h3>Premium Cricket Glove</h3>
-          <p><strong>Price: ₹300.00</strong></p>
-          <p>High-quality leather gloves designed for ultimate protection and comfort on the field.</p>
-          <form id="orderForm">
-            <div class="mb-3">
-              <label for="quantity" class="form-label">Quantity</label>
-              <input type="number" class="form-control" id="quantity" value="1" min="1">
+
+        <!-- Product 1 -->
+        <div class="col-md-4">
+          <div class="card">
+            <img src="https://example.com/glove1.jpg" alt="Glove 1" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title">Premium Leather Glove</h5>
+              <p class="card-text">High-quality leather gloves designed for ultimate protection and comfort.</p>
+              <p><strong>Price: ₹350.00</strong></p>
+              <form class="orderForm" data-price="350.00" data-name="Premium Leather Glove">
+                <div class="mb-3">
+                  <label for="quantity1" class="form-label">Quantity</label>
+                  <input type="number" class="form-control quantity" id="quantity1" value="1" min="1">
+                </div>
+                <button type="button" class="btn btn-success add-to-cart" data-product="1">Add to Cart</button>
+              </form>
             </div>
-            <button type="button" class="btn btn-success" id="add-to-cart">Add to Cart</button>
-          </form>
+          </div>
         </div>
+
+        <!-- Product 2 -->
+        <div class="col-md-4">
+          <div class="card">
+            <img src="https://example.com/glove2.jpg" alt="Glove 2" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title">Pro Elite Glove</h5>
+              <p class="card-text">An advanced option with extra padding for added protection during aggressive play.</p>
+              <p><strong>Price: ₹450.00</strong></p>
+              <form class="orderForm" data-price="450.00" data-name="Pro Elite Glove">
+                <div class="mb-3">
+                  <label for="quantity2" class="form-label">Quantity</label>
+                  <input type="number" class="form-control quantity" id="quantity2" value="1" min="1">
+                </div>
+                <button type="button" class="btn btn-success add-to-cart" data-product="2">Add to Cart</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="col-md-4">
+          <div class="card">
+            <img src="https://example.com/glove3.jpg" alt="Glove 3" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title">Super Grip Glove</h5>
+              <p class="card-text">Designed for those who require excellent grip and durability during play.</p>
+              <p><strong>Price: ₹400.00</strong></p>
+              <form class="orderForm" data-price="400.00" data-name="Super Grip Glove">
+                <div class="mb-3">
+                  <label for="quantity3" class="form-label">Quantity</label>
+                  <input type="number" class="form-control quantity" id="quantity3" value="1" min="1">
+                </div>
+                <button type="button" class="btn btn-success add-to-cart" data-product="3">Add to Cart</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -90,32 +133,60 @@
   <!-- Internal JavaScript -->
   <script>
     let cartDetails = document.getElementById("cart-details");
-    let quantityInput = document.getElementById("quantity");
-    let addToCartButton = document.getElementById("add-to-cart");
     let payButton = document.getElementById("pay-button");
+    let cart = [];
+    
+    // Function to update cart
+    function updateCart() {
+      if (cart.length === 0) {
+        cartDetails.innerHTML = "Your cart is currently empty.";
+      } else {
+        let cartHTML = "";
+        let totalAmount = 0;
+        cart.forEach(item => {
+          cartHTML += `${item.quantity} x ${item.name} - ₹${item.totalAmount.toFixed(2)}<br>`;
+          totalAmount += item.totalAmount;
+        });
+        cartHTML += `<strong>Total: ₹${totalAmount.toFixed(2)}</strong>`;
+        cartDetails.innerHTML = cartHTML;
+      }
+    }
 
-    // Cart state
-    let cart = {
-      quantity: 0,
-      price: 49.99, // Price per glove
-      totalAmount: 0
-    };
+    // Add product to cart
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', function() {
+        let productId = this.getAttribute('data-product');
+        let quantity = document.getElementById(`quantity${productId}`).value;
+        let price = parseFloat(this.closest('form').getAttribute('data-price'));
+        let name = this.closest('form').getAttribute('data-name');
+        
+        // Check if the product already exists in the cart
+        let existingProduct = cart.find(item => item.name === name);
+        if (existingProduct) {
+          existingProduct.quantity += parseInt(quantity);
+          existingProduct.totalAmount = existingProduct.quantity * price;
+        } else {
+          cart.push({
+            name: name,
+            quantity: parseInt(quantity),
+            price: price,
+            totalAmount: parseInt(quantity) * price
+          });
+        }
 
-    addToCartButton.addEventListener("click", function() {
-      // Update cart
-      cart.quantity = parseInt(quantityInput.value);
-      cart.totalAmount = cart.quantity * cart.price;
-
-      // Update cart details on the page
-      cartDetails.innerHTML = `You have ${cart.quantity} Premium Cricket Glove(s) in your cart. Total: $${cart.totalAmount.toFixed(2)}`;
+        // Update the cart
+        updateCart();
+      });
     });
 
     // Razorpay Payment Integration
     payButton.addEventListener("click", function() {
+      let totalAmount = cart.reduce((acc, item) => acc + item.totalAmount, 0);
+      
       var options = {
         key: 'YOUR_RAZORPAY_KEY', // Enter your Razorpay Key here
-        amount: cart.totalAmount * 100, // amount in paise
-        currency: "USD",
+        amount: totalAmount * 100, // amount in paise
+        currency: "INR",
         name: "CricketGloveStore",
         description: "Premium Cricket Gloves",
         image: "https://www.cricketglovestore.com/logo.png", // Replace with your logo
@@ -123,7 +194,6 @@
         handler: function (response) {
           // Handle successful payment
           alert("Payment successful! Your order ID: " + response.razorpay_order_id);
-          // You can send the order details to your server to store the order
         },
         prefill: {
           name: "Customer Name",
