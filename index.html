@@ -83,7 +83,7 @@
           </div>
         </div>
         
-        <!-- Product 2 -->
+   
        <!-- Product 2 -->
 <div class="col-md-4">
   <div class="card">
@@ -150,14 +150,67 @@
     </div>-->
   </section>
 
-  <!-- Cart Section (Placeholder) -->
-  <section id="cart" class="py-5 bg-light">
-    <div class="container">
-      <h2 class="text-center mb-4">Your Cart</h2>
-      <p id="cart-details">Your cart is currently empty.</p>
-      <button id="pay-button" class="btn btn-primary">Proceed to Payment</button>
+ <!-- Cart Section -->
+<section id="cart" class="py-5 bg-light">
+  <div class="container">
+    <h1 class="mb-5">Your Shopping Cart</h1>
+    <div class="row">
+      <div class="col-lg-8">
+        <!-- Cart Items -->
+        <div class="card mb-4">
+          <div class="card-body" id="cart-items">
+            <!-- Cart items will be dynamically inserted here -->
+          </div>
+        </div>
+        <!-- Continue Shopping Button -->
+        <div class="text-start mb-4">
+          <a href="#product" class="btn btn-outline-primary">
+            <i class="bi bi-arrow-left me-2"></i>Continue Shopping
+          </a>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <!-- Cart Summary -->
+        <div class="card cart-summary">
+          <div class="card-body">
+            <h5 class="card-title mb-4">Order Summary</h5>
+            <div class="d-flex justify-content-between mb-3">
+              <span>Subtotal</span>
+              <span id="cart-subtotal">₹0.00</span>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+              <span>Shipping</span>
+              <span id="shipping-cost">₹0.00</span>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+              <span>Tax</span>
+              <span id="tax-cost">₹0.00</span>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between mb-4">
+              <strong>Total</strong>
+              <strong id="cart-total">₹0.00</strong>
+            </div>
+            <button class="btn btn-primary w-100" id="pay-button">Proceed to Checkout</button>
+          </div>
+        </div>
+
+        <!-- Promo Code -->
+        <div class="card mt-4">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Apply Promo Code</h5>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Enter promo code">
+              <button class="btn btn-outline-secondary" type="button">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
+
 
   <!-- Footer Section -->
   <footer class="bg-dark text-white text-center py-3">
@@ -182,34 +235,80 @@
 
   <!-- Internal JavaScript -->
   <script>
-    let cartDetails = document.getElementById("cart-details");
-    let payButton = document.getElementById("pay-button");
-    let cart = [];
+    let cartDetails = document.getElementById("cart-items");
+    let cartTotal = document.getElementById("cart-total");
+    let cartSubtotal = document.getElementById("cart-subtotal");
+    let shippingCost = document.getElementById("shipping-cost");
+    let taxCost = document.getElementById("tax-cost");
     
-    // Function to update cart
+    let cart = [];
+  
+    // Update cart items and summary
     function updateCart() {
       if (cart.length === 0) {
         cartDetails.innerHTML = "Your cart is currently empty.";
+        cartTotal.innerText = "₹0.00";
+        cartSubtotal.innerText = "₹0.00";
+        shippingCost.innerText = "₹0.00";
+        taxCost.innerText = "₹0.00";
       } else {
-        let cartHTML = "";
+        let cartHTML = '';
         let totalAmount = 0;
+        let subtotal = 0;
+        
         cart.forEach(item => {
-          cartHTML += `${item.quantity} x ${item.name} - ₹${item.totalAmount.toFixed(2)}<br>`;
+          subtotal += item.totalAmount;
+          cartHTML += `
+            <div class="row cart-item mb-3">
+              <div class="col-md-3">
+                <img src="${item.image}" alt="${item.name}" class="img-fluid rounded">
+              </div>
+              <div class="col-md-5">
+                <h5 class="card-title">${item.name}</h5>
+                <p class="text-muted">Category: ${item.category}</p>
+              </div>
+              <div class="col-md-2">
+                <div class="input-group">
+                  <button class="btn btn-outline-secondary btn-sm decrease-quantity" data-id="${item.name}">-</button>
+                  <input style="max-width:100px" type="text" class="form-control form-control-sm text-center quantity-input" value="${item.quantity}">
+                  <button class="btn btn-outline-secondary btn-sm increase-quantity" data-id="${item.name}">+</button>
+                </div>
+              </div>
+              <div class="col-md-2 text-end">
+                <p class="fw-bold">₹${item.totalAmount.toFixed(2)}</p>
+                <button class="btn btn-sm btn-outline-danger remove-item" data-id="${item.name}">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </div>
+            <hr>
+          `;
           totalAmount += item.totalAmount;
         });
-        cartHTML += `<strong>Total: ₹${totalAmount.toFixed(2)}</strong>`;
+  
+        // Apply taxes and shipping costs (this can be dynamic based on your logic)
+        let shipping = 50.00;
+        let tax = totalAmount * 0.18;  // Assume 18% tax rate
+        let total = totalAmount + shipping + tax;
+  
         cartDetails.innerHTML = cartHTML;
+        cartSubtotal.innerText = `₹${totalAmount.toFixed(2)}`;
+        shippingCost.innerText = `₹${shipping.toFixed(2)}`;
+        taxCost.innerText = `₹${tax.toFixed(2)}`;
+        cartTotal.innerText = `₹${total.toFixed(2)}`;
       }
     }
-
-    // Add product to cart
+  
+    // Add item to cart
     document.querySelectorAll('.add-to-cart').forEach(button => {
       button.addEventListener('click', function() {
         let productId = this.getAttribute('data-product');
         let quantity = document.getElementById(`quantity${productId}`).value;
         let price = parseFloat(this.closest('form').getAttribute('data-price'));
         let name = this.closest('form').getAttribute('data-name');
-        
+        let image = "https://via.placeholder.com/100";  // Add image link for product
+        let category = "Cricket Gloves";  // Add category information
+  
         // Check if the product already exists in the cart
         let existingProduct = cart.find(item => item.name === name);
         if (existingProduct) {
@@ -220,29 +319,62 @@
             name: name,
             quantity: parseInt(quantity),
             price: price,
-            totalAmount: parseInt(quantity) * price
+            totalAmount: parseInt(quantity) * price,
+            image: image,
+            category: category
           });
         }
-
+  
         // Update the cart
         updateCart();
       });
     });
-
+  
+    // Remove item from cart
+    document.addEventListener('click', function(e) {
+      if (e.target && e.target.classList.contains('remove-item')) {
+        let productName = e.target.getAttribute('data-id');
+        cart = cart.filter(item => item.name !== productName);
+        updateCart();
+      }
+    });
+  
+    // Increase item quantity
+    document.addEventListener('click', function(e) {
+      if (e.target && e.target.classList.contains('increase-quantity')) {
+        let productName = e.target.getAttribute('data-id');
+        let product = cart.find(item => item.name === productName);
+        product.quantity += 1;
+        product.totalAmount = product.quantity * product.price;
+        updateCart();
+      }
+    });
+  
+    // Decrease item quantity
+    document.addEventListener('click', function(e) {
+      if (e.target && e.target.classList.contains('decrease-quantity')) {
+        let productName = e.target.getAttribute('data-id');
+        let product = cart.find(item => item.name === productName);
+        if (product.quantity > 1) {
+          product.quantity -= 1;
+          product.totalAmount = product.quantity * product.price;
+        }
+        updateCart();
+      }
+    });
+  
     // Razorpay Payment Integration
-    payButton.addEventListener("click", function() {
+    document.getElementById("pay-button").addEventListener("click", function() {
       let totalAmount = cart.reduce((acc, item) => acc + item.totalAmount, 0);
-      
       var options = {
-        key: 'YOUR_RAZORPAY_KEY', // Enter your Razorpay Key here
-        amount: totalAmount * 100, // amount in paise
+        key: 'YOUR_RAZORPAY_KEY',
+        amount: totalAmount * 100,
         currency: "INR",
         name: "CricketGloveStore",
         description: "Premium Cricket Gloves",
         image: "https://www.cricketglovestore.com/logo.png", // Replace with your logo
         order_id: generateOrderId(),
         handler: function (response) {
-          // Handle successful payment
           alert("Payment successful! Your order ID: " + response.razorpay_order_id);
         },
         prefill: {
@@ -257,15 +389,15 @@
           color: "#3399cc"
         }
       };
-
       var rzp1 = new Razorpay(options);
       rzp1.open();
     });
-
+  
     function generateOrderId() {
-      return "ORD" + new Date().getTime(); // Just a simple way to generate a unique order ID
+      return "ORD" + new Date().getTime(); // Simple order ID generator
     }
   </script>
+  
 
 </body>
 </html>
