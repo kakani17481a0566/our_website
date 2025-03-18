@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premium Cricket Gloves</title>
+  
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Header Section -->
+  <header class="bg-dark text-white p-3">
+    <div class="container d-flex justify-content-between align-items-center">
+      <div class="logo h4">CricketGloveStore</div>
+      <nav>
+        <a href="#home" class="text-white me-3">Home</a>
+        <a href="#product" class="text-white me-3">Product</a>
+        <a href="#contact" class="text-white me-3">Contact</a>
+        <a href="#cart" class="text-white">Cart</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="text-center">
+    <div class="container">
+      <img src="" alt="Cricket Glove" class="img-fluid mb-4">
+      <h1 class="display-4">Premium Cricket Gloves</h1>
+      <p class="lead">Perfect grip for the perfect game.</p>
+      <a href="#product" class="btn btn-dark btn-lg">Shop Now</a>
+    </div>
+  </section>
+
+  <!-- Product Section -->
+  <section id="product" class="py-5">
+    <div class="container">
+      <h2 class="text-center mb-4">Our Product</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <img src="https://res.cloudinary.com/kakani7/image/upload/v1742270653/CRICKET_GLO0VE/shopping_eqpjyy.jpg" alt="Cricket Glove Detail" class="img-fluid">
+        </div>
+        <div class="col-md-6">
+          <h3>Premium Cricket Glove</h3>
+          <p><strong>Price: $49.99</strong></p>
+          <p>High-quality leather gloves designed for ultimate protection and comfort on the field.</p>
+          <form id="orderForm">
+            <div class="mb-3">
+              <label for="quantity" class="form-label">Quantity</label>
+              <input type="number" class="form-control" id="quantity" value="1" min="1">
+            </div>
+            <button type="button" class="btn btn-success" id="add-to-cart">Add to Cart</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cart Section (Placeholder) -->
+  <section id="cart" class="py-5 bg-light">
+    <div class="container">
+      <h2 class="text-center mb-4">Your Cart</h2>
+      <p id="cart-details">Your cart is currently empty.</p>
+      <button id="pay-button" class="btn btn-primary">Proceed to Payment</button>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer class="bg-dark text-white text-center py-3">
+    <div class="container">
+      <p>&copy; 2025 CricketGloveStore. All rights reserved.</p>
+      <p>Contact: support@cricketglovestore.com</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 and Custom JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+
+  <!-- Razorpay Script -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <!-- Internal JavaScript -->
+  <script>
+    let cartDetails = document.getElementById("cart-details");
+    let quantityInput = document.getElementById("quantity");
+    let addToCartButton = document.getElementById("add-to-cart");
+    let payButton = document.getElementById("pay-button");
+
+    // Cart state
+    let cart = {
+      quantity: 0,
+      price: 49.99, // Price per glove
+      totalAmount: 0
+    };
+
+    addToCartButton.addEventListener("click", function() {
+      // Update cart
+      cart.quantity = parseInt(quantityInput.value);
+      cart.totalAmount = cart.quantity * cart.price;
+
+      // Update cart details on the page
+      cartDetails.innerHTML = `You have ${cart.quantity} Premium Cricket Glove(s) in your cart. Total: $${cart.totalAmount.toFixed(2)}`;
+    });
+
+    // Razorpay Payment Integration
+    payButton.addEventListener("click", function() {
+      var options = {
+        key: 'YOUR_RAZORPAY_KEY', // Enter your Razorpay Key here
+        amount: cart.totalAmount * 100, // amount in paise
+        currency: "USD",
+        name: "CricketGloveStore",
+        description: "Premium Cricket Gloves",
+        image: "https://www.cricketglovestore.com/logo.png", // Replace with your logo
+        order_id: generateOrderId(),
+        handler: function (response) {
+          // Handle successful payment
+          alert("Payment successful! Your order ID: " + response.razorpay_order_id);
+          // You can send the order details to your server to store the order
+        },
+        prefill: {
+          name: "Customer Name",
+          email: "customer@example.com",
+          contact: "1234567890"
+        },
+        notes: {
+          address: "Customer address"
+        },
+        theme: {
+          color: "#3399cc"
+        }
+      };
+
+      var rzp1 = new Razorpay(options);
+      rzp1.open();
+    });
+
+    function generateOrderId() {
+      return "ORD" + new Date().getTime(); // Just a simple way to generate a unique order ID
+    }
+  </script>
+
+</body>
+</html>
