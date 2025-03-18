@@ -42,7 +42,30 @@
         <!-- Product 1 -->
         <div class="col-md-4">
           <div class="card">
-            <img src="https://example.com/glove1.jpg" alt="Glove 1" class="card-img-top">
+            <!-- Carousel for images -->
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img class="d-block w-100" src="https://res.cloudinary.com/kakani7/image/upload/v1742283156/CRICKET/j79vphl72rftwx9duwhw.jpg" alt="Glove 1">
+                </div>
+                <div class="carousel-item">
+                  <img class="d-block w-100" src="https://res.cloudinary.com/kakani7/image/upload/v1742283156/CRICKET/dh1e4tjhaxtsixaccvfu.jpg" alt="Glove 2">
+                </div>
+                <div class="carousel-item">
+                  <img class="d-block w-100" src="https://res.cloudinary.com/kakani7/image/upload/v1742283156/CRICKET/aicelx40syyl5jf2xpv4.jpg" alt="Glove 3">
+                </div>
+                <!-- Add more images as needed -->
+              </div>
+              <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </a>
+              <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </a>
+            </div>
+        
             <div class="card-body">
               <h5 class="card-title">Premium Leather Glove</h5>
               <p class="card-text">High-quality leather gloves designed for ultimate protection and comfort.</p>
@@ -57,25 +80,50 @@
             </div>
           </div>
         </div>
-
+        
         <!-- Product 2 -->
-        <div class="col-md-4">
-          <div class="card">
-            <img src="https://example.com/glove2.jpg" alt="Glove 2" class="card-img-top">
-            <div class="card-body">
-              <h5 class="card-title">Pro Elite Glove</h5>
-              <p class="card-text">An advanced option with extra padding for added protection during aggressive play.</p>
-              <p><strong>Price: ₹450.00</strong></p>
-              <form class="orderForm" data-price="450.00" data-name="Pro Elite Glove">
-                <div class="mb-3">
-                  <label for="quantity2" class="form-label">Quantity</label>
-                  <input type="number" class="form-control quantity" id="quantity2" value="1" min="1">
-                </div>
-                <button type="button" class="btn btn-success add-to-cart" data-product="2">Add to Cart</button>
-              </form>
-            </div>
-          </div>
+       <!-- Product 2 -->
+<div class="col-md-4">
+  <div class="card">
+    <!-- Carousel for images -->
+    <div id="carouselExampleControls2" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img class="d-block w-100" src="https://res.cloudinary.com/kakani7/image/upload/v1742283595/CRICKET/tkxegnzedznljzhfa8so.jpg" alt="Glove 2">
         </div>
+        <div class="carousel-item">
+          <img class="d-block w-100" src="https://res.cloudinary.com/kakani7/image/upload/v1742283595/CRICKET/wcklnmi90ike6kwzvaer.jpg" alt="Glove 2 Alt 1">
+        </div>
+        <div class="carousel-item">
+          <img class="d-block w-100" src="https://res.cloudinary.com/kakani7/image/upload/v1742283595/CRICKET/wcklnmi90ike6kwzvaer.jpg" alt="Glove 2 Alt 2">
+        </div>
+        <!-- You can add more images here if necessary -->
+      </div>
+      <a class="carousel-control-prev" href="#carouselExampleControls2" role="button" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleControls2" role="button" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </a>
+    </div>
+
+    <div class="card-body">
+      <h5 class="card-title">Pro Elite Glove</h5>
+      <p class="card-text">An advanced option with extra padding for added protection during aggressive play.</p>
+      <p><strong>Price: ₹450.00</strong></p>
+      <form class="orderForm" data-price="450.00" data-name="Pro Elite Glove">
+        <div class="mb-3">
+          <label for="quantity2" class="form-label">Quantity</label>
+          <input type="number" class="form-control quantity" id="quantity2" value="1" min="1">
+        </div>
+        <button type="button" class="btn btn-success add-to-cart" data-product="2">Add to Cart</button>
+      </form>
+    </div>
+  </div>
+</div>
+
 
         <!-- Product 3 -->
         <div class="col-md-4">
